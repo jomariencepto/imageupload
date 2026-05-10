@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supabase Image Uploads</title>
+  <link rel="stylesheet" href="styles.css?v=8">
+</head>
+<body>
+  <button class="menu-toggle" id="menuToggleButton" type="button" aria-label="Open menu" aria-expanded="false">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Uploaded image dates">
+    <div class="sidebar-header">
+      <button class="icon-button is-active" id="imageNavButton" type="button" aria-label="Show uploaded images">
+        <span class="grid-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+      <h1>Uploads</h1>
+    </div>
+    <nav class="date-list" id="dateList" aria-label="Upload dates">
+      <p class="empty-state">No upload dates yet.</p>
+    </nav>
+
+    <section class="admin-panel">
+      <div>
+        <h2>Admin</h2>
+        <p id="adminStatus">Sign in as an admin to delete uploaded images.</p>
+      </div>
+
+      <form class="admin-form" id="adminLoginForm">
+        <input id="adminEmail" type="email" placeholder="Admin email" autocomplete="email" required>
+        <input id="adminPassword" type="password" placeholder="Password" autocomplete="current-password" required>
+        <button class="secondary-button" id="adminLoginButton" type="submit">Log in</button>
+      </form>
+
+      <button class="secondary-button danger-button" id="adminLogoutButton" type="button" hidden>Log out</button>
+    </section>
+  </aside>
+
+  <main class="page-shell">
+    <section class="upload-panel">
+      <div>
+        <h2>Image Gallery</h2>
+        <p>Upload your Memorable Images .</p>
+      </div>
+
+      <form class="upload-form" id="uploadForm">
+        <label class="file-drop" for="imageInput">
+          <span id="fileLabel">Choose images</span>
+          <input id="imageInput" type="file" accept="image/*" multiple required>
+        </label>
+        <button class="primary-button" id="uploadButton" type="submit">Upload</button>
+      </form>
+
+      <p class="status-message" id="statusMessage" role="status"></p>
+    </section>
+    <section class="gallery-toolbar">
+      <h2 id="galleryTitle">Recent Images</h2>
+      <button class="text-button" id="showRecentButton" type="button">Show recent</button>
+    </section>
+
+    <section class="gallery-grid" id="galleryGrid" aria-live="polite">
+      <p class="empty-state">Images will appear here after upload.</p>
+    </section>
+
+    <div class="see-more-row">
+      <button class="secondary-button" id="seeMoreButton" type="button" hidden>See more</button>
+    </div>
+  </main>
+
+  <div class="image-viewer" id="imageViewer" hidden aria-modal="true" role="dialog">
+    <button class="viewer-close" id="viewerCloseButton" type="button" aria-label="Close image preview">X</button>
+    <figure class="viewer-content">
+      <img id="viewerImage" src="" alt="">
+      <figcaption id="viewerCaption"></figcaption>
+      <div class="viewer-actions">
+        <a class="viewer-download" id="viewerDownloadButton" href="#" download>Download</a>
+        <button class="viewer-delete" id="viewerDeleteButton" type="button" hidden>Delete</button>
+      </div>
+    </figure>
+  </div>
+
+  <script type="module" src="app.js?v=8"></script>
+</body>
+</html>
