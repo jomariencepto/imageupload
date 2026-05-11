@@ -366,8 +366,6 @@ function renderGallery() {
   visibleImages.forEach((image) => {
     const card = document.createElement("article");
     card.className = "image-card";
-    card.style.width = "320px";
-    card.style.maxWidth = "100%";
 
     card.innerHTML = `
       <p class="image-title">${escapeHtml(image.originalName || "Untitled image")}</p>
@@ -384,11 +382,6 @@ function renderGallery() {
     card
       .querySelector(".image-preview-button")
       .addEventListener("click", () => openImageViewer(image));
-
-    const imageElement = card.querySelector("img");
-    imageElement.style.width = "100%";
-    imageElement.style.height = "auto";
-    imageElement.style.objectFit = "contain";
 
     const deleteButton = card.querySelector(".delete-button");
     if (deleteButton) {
