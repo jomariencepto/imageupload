@@ -347,15 +347,13 @@ input {
 }
 
 .gallery-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 320px);
-  justify-content: start;
-  gap: 16px;
+  display: block;
 }
 
 .image-card {
-  width: 100%;
-  max-width: 320px;
+  width: 320px !important;
+  max-width: 100% !important;
+  margin-bottom: 16px;
   overflow: hidden;
   background: var(--panel);
   border: 1px solid var(--line);
@@ -377,10 +375,11 @@ input {
 }
 
 .image-card img {
-  width: 100%;
-  height: auto;
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
   display: block;
-  object-fit: contain;
+  object-fit: contain !important;
   background: #e5e7eb;
 }
 
@@ -615,8 +614,7 @@ input {
   }
 
   .gallery-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
+    display: block;
   }
 
   .image-viewer {
