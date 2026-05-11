@@ -8,6 +8,7 @@ const bucketName = "ImageUpload";
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const uploadForm = document.querySelector("#uploadForm");
+const imageTitleInput = document.querySelector("#imageTitleInput");
 const imageInput = document.querySelector("#imageInput");
 const fileLabel = document.querySelector("#fileLabel");
 const uploadButton = document.querySelector("#uploadButton");
@@ -97,6 +98,14 @@ uploadForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const files = Array.from(imageInput.files);
+  const imageTitle = imageTitleInput.value.trim();
+
+  if (!imageTitle) {
+    setStatus("Please add an image title first.", true);
+    imageTitleInput.focus();
+    return;
+  }
+
   if (!files.length) {
     setStatus("Please choose at least one image first.", true);
     return;
@@ -140,7 +149,7 @@ uploadForm.addEventListener("submit", async (event) => {
         .insert({
           image_url: publicUrlData.publicUrl,
           image_path: imagePath,
-          original_name: file.name
+          original_name: files.length === 1 ? imageTitle : `${imageTitle} ${index + 1}`
         });
 
       if (insertError) {
@@ -363,6 +372,7 @@ function renderGallery() {
         <img src="${image.imageUrl}" alt="${escapeHtml(image.originalName || "Uploaded image")}">
       </button>
       <div class="image-meta">
+        <p class="image-title">${escapeHtml(image.originalName || "Untitled image")}</p>
         <p class="image-date">${formatFullDate(image.uploadedAt)}</p>
         <p class="image-time">${formatTime(image.uploadedAt)}</p>
         ${isAdmin ? '<button class="delete-button" type="button">Delete</button>' : ""}

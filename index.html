@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Supabase Image Uploads</title>
-  <link rel="stylesheet" href="styles.css?v=8">
+  <link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body>
   <button class="menu-toggle" id="menuToggleButton" type="button" aria-label="Open menu" aria-expanded="false">
@@ -55,6 +55,7 @@
       </div>
 
       <form class="upload-form" id="uploadForm">
+        <input class="title-input" id="imageTitleInput" type="text" placeholder="Image title" maxlength="80" required>
         <label class="file-drop" for="imageInput">
           <span id="fileLabel">Choose images</span>
           <input id="imageInput" type="file" accept="image/*" multiple required>
@@ -90,6 +91,6 @@
     </figure>
   </div>
 
-  <script type="module" src="app.js?v=8"></script>
+  <script type="module" src="app.js?v=9"></script>
 </body>
 </html>
