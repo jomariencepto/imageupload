@@ -55,12 +55,16 @@
       </div>
 
       <form class="upload-form" id="uploadForm">
-        <input class="title-input" id="imageTitleInput" type="text" placeholder="Image title" maxlength="80" required>
-        <label class="file-drop" for="imageInput">
-          <span id="fileLabel">Choose images</span>
-          <input id="imageInput" type="file" accept="image/*" multiple required>
-        </label>
-        <button class="primary-button" id="uploadButton" type="submit">Upload</button>
+        <div class="title-field">
+          <input class="title-input" id="imageTitleInput" type="text" placeholder="Image title" maxlength="80" required>
+        </div>
+        <div class="upload-actions">
+          <label class="file-drop" for="imageInput">
+            <span id="fileLabel">Choose images</span>
+            <input id="imageInput" type="file" accept="image/*" multiple required>
+          </label>
+          <button class="primary-button" id="uploadButton" type="submit">Upload</button>
+        </div>
       </form>
 
       <p class="status-message" id="statusMessage" role="status"></p>

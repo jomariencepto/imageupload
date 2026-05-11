@@ -368,11 +368,11 @@ function renderGallery() {
     card.className = "image-card";
 
     card.innerHTML = `
+      <p class="image-title">${escapeHtml(image.originalName || "Untitled image")}</p>
       <button class="image-preview-button" type="button" aria-label="View ${escapeHtml(image.originalName || "uploaded image")}">
         <img src="${image.imageUrl}" alt="${escapeHtml(image.originalName || "Uploaded image")}">
       </button>
       <div class="image-meta">
-        <p class="image-title">${escapeHtml(image.originalName || "Untitled image")}</p>
         <p class="image-date">${formatFullDate(image.uploadedAt)}</p>
         <p class="image-time">${formatTime(image.uploadedAt)}</p>
         ${isAdmin ? '<button class="delete-button" type="button">Delete</button>' : ""}
