@@ -347,12 +347,13 @@ input {
 }
 
 .gallery-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 
 .image-card {
+  width: 100%;
   overflow: hidden;
   background: var(--panel);
   border: 1px solid var(--line);
