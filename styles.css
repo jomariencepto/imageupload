@@ -348,7 +348,7 @@ input {
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(210px, 100%), 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
@@ -357,6 +357,10 @@ input {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
+}
+
+.image-card img {
+  max-height: 420px;
 }
 
 .image-preview-button {
@@ -612,7 +616,6 @@ input {
   }
 
   .gallery-grid {
-    grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
     gap: 12px;
   }
 
