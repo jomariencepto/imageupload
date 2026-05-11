@@ -9,6 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const uploadForm = document.querySelector("#uploadForm");
 const imageTitleInput = document.querySelector("#imageTitleInput");
+const titleOptions = document.querySelector("#titleOptions");
 const imageInput = document.querySelector("#imageInput");
 const fileLabel = document.querySelector("#fileLabel");
 const uploadButton = document.querySelector("#uploadButton");
@@ -17,6 +18,7 @@ const galleryGrid = document.querySelector("#galleryGrid");
 const dateList = document.querySelector("#dateList");
 const seeMoreButton = document.querySelector("#seeMoreButton");
 const galleryTitle = document.querySelector("#galleryTitle");
+const titleSearchInput = document.querySelector("#titleSearchInput");
 const showRecentButton = document.querySelector("#showRecentButton");
 const imageNavButton = document.querySelector("#imageNavButton");
 const imageViewer = document.querySelector("#imageViewer");
@@ -38,6 +40,7 @@ const recentLimit = 6;
 let allImages = [];
 let visibleCount = recentLimit;
 let selectedDateKey = null;
+let titleSearchTerm = "";
 let currentUser = null;
 let isAdmin = false;
 let activePreviewImage = null;
@@ -52,6 +55,12 @@ imageInput.addEventListener("change", () => {
   } else {
     fileLabel.textContent = `${files.length} images selected`;
   }
+});
+
+titleSearchInput.addEventListener("input", () => {
+  titleSearchTerm = titleSearchInput.value.trim().toLowerCase();
+  visibleCount = recentLimit;
+  renderGallery();
 });
 
 adminLoginForm.addEventListener("submit", async (event) => {
@@ -149,7 +158,7 @@ uploadForm.addEventListener("submit", async (event) => {
         .insert({
           image_url: publicUrlData.publicUrl,
           image_path: imagePath,
-          original_name: files.length === 1 ? imageTitle : `${imageTitle} ${index + 1}`
+          original_name: imageTitle
         });
 
       if (insertError) {
@@ -159,7 +168,8 @@ uploadForm.addEventListener("submit", async (event) => {
 
     uploadForm.reset();
     fileLabel.textContent = "Choose images";
-    selectedDateKey = null;
+    titleSearchInput.value = imageTitle;
+    titleSearchTerm = imageTitle.toLowerCase();
     visibleCount = recentLimit;
     setStatus(`${files.length} image${files.length === 1 ? "" : "s"} uploaded successfully.`);
     await loadImages();
@@ -178,12 +188,16 @@ seeMoreButton.addEventListener("click", () => {
 
 showRecentButton.addEventListener("click", () => {
   selectedDateKey = null;
+  titleSearchTerm = "";
+  titleSearchInput.value = "";
   visibleCount = recentLimit;
   renderAll();
 });
 
 imageNavButton.addEventListener("click", () => {
   selectedDateKey = null;
+  titleSearchTerm = "";
+  titleSearchInput.value = "";
   visibleCount = recentLimit;
   renderAll();
 });
@@ -305,7 +319,20 @@ async function loadImages() {
 
 function renderAll() {
   renderDateList();
+  renderTitleOptions();
   renderGallery();
+}
+
+function renderTitleOptions() {
+  const titles = [...new Set(
+    allImages
+      .map((image) => image.originalName)
+      .filter(Boolean)
+  )].sort((a, b) => a.localeCompare(b));
+
+  titleOptions.innerHTML = titles
+    .map((title) => `<option value="${escapeHtml(title)}"></option>`)
+    .join("");
 }
 
 function renderDateList() {
@@ -345,20 +372,23 @@ function closeMobileMenu() {
 }
 
 function renderGallery() {
-  const imagesToShow = selectedDateKey
+  const imagesByDate = selectedDateKey
     ? allImages.filter((image) => image.dateKey === selectedDateKey)
     : allImages;
+  const imagesToShow = titleSearchTerm
+    ? imagesByDate.filter((image) => (image.originalName || "").toLowerCase().includes(titleSearchTerm))
+    : imagesByDate;
 
   const visibleImages = imagesToShow.slice(0, visibleCount);
-  galleryTitle.textContent = selectedDateKey
-    ? `Images from ${formatDateLabel(selectedDateKey)}`
-    : "Recent Images";
+  galleryTitle.textContent = getGalleryTitle();
 
-  showRecentButton.hidden = !selectedDateKey;
+  showRecentButton.hidden = !selectedDateKey && !titleSearchTerm;
   seeMoreButton.hidden = visibleCount >= imagesToShow.length;
 
   if (!visibleImages.length) {
-    galleryGrid.innerHTML = '<p class="empty-state">No images found.</p>';
+    galleryGrid.innerHTML = titleSearchTerm
+      ? '<p class="empty-state">No matching titles found.</p>'
+      : '<p class="empty-state">No images found.</p>';
     return;
   }
 
@@ -390,6 +420,22 @@ function renderGallery() {
 
     galleryGrid.appendChild(card);
   });
+}
+
+function getGalleryTitle() {
+  if (selectedDateKey && titleSearchTerm) {
+    return `Images from ${formatDateLabel(selectedDateKey)} matching "${titleSearchInput.value.trim()}"`;
+  }
+
+  if (selectedDateKey) {
+    return `Images from ${formatDateLabel(selectedDateKey)}`;
+  }
+
+  if (titleSearchTerm) {
+    return `Images matching "${titleSearchInput.value.trim()}"`;
+  }
+
+  return "Recent Images";
 }
 
 async function deleteImage(image) {

@@ -346,6 +346,26 @@ input {
   margin: 28px 0 16px;
 }
 
+.gallery-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-input {
+  width: min(260px, 48vw);
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.search-input::placeholder {
+  color: var(--muted);
+}
+
 .gallery-grid {
   display: flex;
   flex-wrap: wrap;
@@ -613,6 +633,14 @@ input {
     align-items: flex-start;
     flex-direction: column;
     gap: 8px;
+  }
+
+  .gallery-controls {
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
   }
 
   .gallery-grid {
